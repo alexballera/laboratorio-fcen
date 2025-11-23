@@ -231,10 +231,12 @@ materias_cuatrimestre2('cronograma_sugerido.csv', 3)
 # =============================================
 # NUMPY
 # =============================================
+# rangos
 print(np.arange(4))
 print(np.arange(2, 9, 2))
 print(np.linspace(0, 10, 10))
-# %% concatenar
+# %% arrays 
+# concatenar
 a = np.array([1, 2, 3, 4])
 b = np.array([5,6,7,8])
 np.concat((a, b))
@@ -247,4 +249,33 @@ print('concat axis=0', z)
 z = np.concat((x,y), axis=1)
 print("concat axis=1", z)
 # %%
-
+arr = np.array([
+    [[0,1,2,3], [4,5,6,7]],
+    [[3,8,10,-1], [0,1,1,0]],
+    [[3,3,3,3], [5,5,5,5]]
+])
+print(f'dimensiones: {arr.ndim}')
+print(f'elementos por eje: {arr.shape}')
+print(f'total entradas, tamaño = 3*2*4 = {arr.size}')
+print(f'reshape, modifico la forma a 12*2: {arr.reshape((12,2))}')
+print(f'reshape, modifico la forma a 4*6: {arr.reshape((4,6))}')
+print(f'reshape, modifico la forma a 3* lo que corresponda: {arr.reshape((3,-1))}')
+# %% OPERACIONES
+data = np.array([1,2])
+ones = np.ones(2)
+zeros = np.zeros(2)
+print(data)
+print(ones)
+print(zeros)
+# Suma
+suma = data + ones
+print(f'Suma : {data} + {ones} = {suma}')
+# Resta
+resta = data - ones
+print(f'Resta: {data} - {ones} = {resta}')
+# Multiplicación
+mult = data * data
+print(f'Mult : {data} * {data} = {mult}')
+# División
+div = data / data
+print(f'Div  : {data} / {data} = {div}')
