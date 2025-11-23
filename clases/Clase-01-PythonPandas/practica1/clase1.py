@@ -8,7 +8,10 @@ import math
 import csv
 import random
 import numpy as np
-# %% Copias
+# %% 
+# =============================================
+# Copias
+# =============================================
 a = [1, 2, 3, 4, 5]
 b = a  # Copia por referencia
 c = a.copy()  # Copia por valor
@@ -30,14 +33,20 @@ print("Lista original a:", a)
 print("Copia por referencia b:", b)
 print("Copia por valor c:", c)
 print("Copia por valor d:", d)
-# %% math
+# %%
+# =============================================
+# Módulos
+# =============================================
 print(math.sqrt(2))
 print(math.exp(2))
 print(math.cos(120))
 print(math.log(8))
 print(math.factorial(5))
 print(math.gcd(48, 18))
-# %% Manejo de archivos
+# %%
+# =============================================
+# Manejo de archivos
+# =============================================
 ruta = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica1/'
 nombre_archivo = 'datame.txt'
 f = open(ruta + nombre_archivo, 'rt')
@@ -70,7 +79,10 @@ print('Encabezado', encabezado)
 for linea in lineas:
     print(linea)
 f.close()
-# %% Ejercicio 1
+# %%
+# =============================================
+# Ejercicio 1
+# =============================================
 '''
 Escribir una función generala_tirar()  que simule una tirada de dados
 para el juego de la generala. Es decir, debe devolver una lista aleatoria
@@ -114,7 +126,10 @@ def verificar_opciones(numeros):
     return numeros
     
 verificar_opciones(tirar_dados())
-# %% datame.txt
+# %%
+# =============================================
+# Ejercicio 2
+# =============================================
 '''
 Escribir un programa que recorra las líneas del archivo ‘datame.txt’
 e imprima solamente las líneas que contienen la palabra ‘estudiante’
@@ -134,6 +149,9 @@ nuevo_doc.write(datame_estudiante)
 nuevo_doc.close()
 
 # %%
+# =============================================
+# Ejercicio 3
+# =============================================
 '''
 Utilizando el archivo cronograma_sugerido , armar una lista de las
 materias del cronograma, llamada “lista_materias 
@@ -209,8 +227,10 @@ def materias_cuatrimestre2(nombre_archivo, n):
     return materias
 
 materias_cuatrimestre2('cronograma_sugerido.csv', 3)
-# %% =============================================
+# %%
+# =============================================
 # NUMPY
+# =============================================
 print(np.arange(4))
 print(np.arange(2, 9, 2))
 print(np.linspace(0, 10, 10))
@@ -227,3 +247,4 @@ print('concat axis=0', z)
 z = np.concat((x,y), axis=1)
 print("concat axis=1", z)
 # %%
+
