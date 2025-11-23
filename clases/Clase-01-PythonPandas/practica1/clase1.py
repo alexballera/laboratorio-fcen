@@ -7,6 +7,7 @@
 import math
 import csv
 import random
+import numpy as np
 # %% Copias
 a = [1, 2, 3, 4, 5]
 b = a  # Copia por referencia
@@ -37,7 +38,7 @@ print(math.log(8))
 print(math.factorial(5))
 print(math.gcd(48, 18))
 # %% Manejo de archivos
-ruta = './'
+ruta = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica1/'
 nombre_archivo = 'datame.txt'
 f = open(ruta + nombre_archivo, 'rt')
 data = f.read()
@@ -109,7 +110,7 @@ verificar_opciones(tirar_dados())
 Escribir un programa que recorra las líneas del archivo ‘datame.txt’
 e imprima solamente las líneas que contienen la palabra ‘estudiante’
 '''
-path = './'
+path = ruta
 name = 'datame.txt'
 file = open(path + name, 'rt')
 
@@ -170,14 +171,14 @@ def materias_cuatrimestre(nombre_archivo, n):
 
     
     file = open(path + nombre_archivo, 'rt')
-    next(file)
-    lineas = csv.reader(file)
+    reader = csv.reader(file)
+    next(reader)
     materias = {}
     i = 0
-    for linea in lineas:
-        if linea[0] == str(n):
+    for row in reader:
+        if row[0] == str(n):
             i += 1
-            materias[f'materia_sugerida_{i}'] = {'asignatura': linea[1], 'correlatividad': linea[2]}
+            materias[f'materia_sugerida_{i}'] = {'asignatura': row[1], 'correlatividad': row[2]}
             
     return materias
     
@@ -199,4 +200,21 @@ def materias_cuatrimestre2(nombre_archivo, n):
     return materias
 
 materias_cuatrimestre2('cronograma_sugerido.csv', 3)
+# %% =============================================
+# NUMPY
+print(np.arange(4))
+print(np.arange(2, 9, 2))
+print(np.linspace(0, 10, 10))
+# %% concatenar
+a = np.array([1, 2, 3, 4])
+b = np.array([5,6,7,8])
+np.concat((a, b))
+np.concatenate((a, b))
+x = np.array([[1,2], [3,4]])
+y = np.array([[5,6], [7,8]])
+z = np.concat((x,y), axis = 0)
+print('concat axis=0', z)
+
+z = np.concat((x,y), axis=1)
+print("concat axis=1", z)
 # %%
