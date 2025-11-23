@@ -84,16 +84,25 @@ tirar_dados()
 # %% escalera
 def escalera(numeros):
     return numeros == [1,2,3,4,5] or numeros == [2,3,4,5,6]
+
+def generala(num):
+    return num[0] == num[-1]
+
+def poker (num):
+    return num[0] == num[-2]
+
+def full(num):
+    return (num[-1] == num[-2] and num[0] == num[1] == num[2]) or (num[-1] == num[-2] == num[-3] and num[0] == num[1])
 # %% verificar opciones
 def verificar_opciones(numeros):
     num = sorted(numeros)
-    if (num[0] == num[-1]):
+    if (generala(num)):
         print('Generala')
     
-    elif (num[0] == num[-2]):
+    elif (poker(num)):
         print('Poker')
         
-    elif (num[-1] == num[-2] and num[0] == num[1] == num[2]) or (num[-1] == num[-2] == num[-3] and num[0] == num[1]):
+    elif (full(num)):
         print('Full')
     
     elif escalera(numeros):
