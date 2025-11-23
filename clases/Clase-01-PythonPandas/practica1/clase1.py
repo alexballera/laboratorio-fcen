@@ -8,6 +8,7 @@ import math
 import csv
 import random
 import numpy as np
+import pandas as pd
 # %% 
 # =============================================
 # Copias
@@ -260,22 +261,118 @@ print(f'total entradas, tamaño = 3*2*4 = {arr.size}')
 print(f'reshape, modifico la forma a 12*2: {arr.reshape((12,2))}')
 print(f'reshape, modifico la forma a 4*6: {arr.reshape((4,6))}')
 print(f'reshape, modifico la forma a 3* lo que corresponda: {arr.reshape((3,-1))}')
-# %% OPERACIONES
+
+# %%
+# ARRAYS SIMPLES UNIDIMENSIONAL
 data = np.array([1,2])
 ones = np.ones(2)
 zeros = np.zeros(2)
 print(data)
 print(ones)
 print(zeros)
+# %%
+# operaciones
 # Suma
 suma = data + ones
-print(f'Suma : {data} + {ones} = {suma}')
+print(f'Suma     : {data} + {ones} = {suma}')
+
 # Resta
 resta = data - ones
-print(f'Resta: {data} - {ones} = {resta}')
+print(f'Resta    : {data} - {ones} = {resta}')
+
 # Multiplicación
 mult = data * data
-print(f'Mult : {data} * {data} = {mult}')
+print(f'Mult     : {data} * {data} = {mult}')
+
+# Multiplicación escalar
+mult = data * 1.6
+print(f'Mult Esc : {data} * 1.6 = {mult}')
+
 # División
 div = data / data
-print(f'Div  : {data} / {data} = {div}')
+print(f'División : {data} / {data} = {div}')
+# %% 
+# max, min, sum
+# max, devuelve el valor máximo del array
+data = np.array([1,3,5])
+max = data.max()
+print(f'Máximo {data} = {max}')
+
+# min, devuelve el valor mínimo del array
+min = data.min()
+print(f'Mínimo {data} = {min}')
+
+# sum, devuelve la suma del array
+sum = data.sum()
+print(f'Suma {data} = {sum}') 
+
+# %% 
+# ARRAYS MULTIDIMENSIONAL
+data = np.array([[1,2], [3,4], [5,6]])
+print(data)
+print(f'shape {data.shape}')
+
+# %%
+# Obtener celdas
+print(data[0,1]) # celda row 0 col 1
+print(data[1:3]) # rows del 1 al 3 (sin incluir al 3) = del 1 al 2
+print(data[0:2,0]) # rows del 0 al 1 y col 0
+
+# %%
+# Operaciones
+# max
+max = data.max()
+print(f'Máximo: {max}')
+
+# min
+min = data.min()
+print(f'Mínimo: {min}')
+
+# sum
+sum = data.sum()
+print(f'Suma: {sum}')
+# %%
+# max/min ejes "y" o cols, axis = 0, devuelve el máximo/mínimo de cada columna
+max_axis_0 = data.max(axis = 0)
+print(max_axis_0)
+# %%
+# max/min ejes "x" o rows, axis = 1, devuelve el máximo/mínimo de cada fila
+max_axis_1 = data.max(axis = 1)
+print(max_axis_1)
+# %%
+# sum ejes "y" o cols, axis = 0, devuelve la suma de cada columna (suma vertical)
+sum_axis_0 = data.sum(axis = 0)
+print(sum_axis_0)
+# %%
+# sum ejes "x" o rows, axis = 1, devuelve la suma de cada línea (suma horizontal)
+sum_axis_1 = data.sum(axis = 1)
+print(sum_axis_1)
+# %% ---------------------------------------------------
+# Ejercicio
+def pisar_elemento(M, e):
+    M_new = []
+    for row in M:
+        row_new = []
+        if e in row:
+            for num in row:
+                if num == e:
+                    row_new.append(-1)
+                else:
+                    row_new.append(int(num))
+            M_new.append(row_new)
+        else:
+            M_new.append(row.tolist())
+    M = np.array(M_new)
+    return M
+
+M = np.array([
+    [0,1,2,3],
+    [2,5,6,7]
+])
+e = 2
+print(pisar_elemento(M, e))
+# %%
+# =============================================
+# PANDAS: Series & DataFrames
+# =============================================
+# %%
