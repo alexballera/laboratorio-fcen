@@ -93,7 +93,7 @@ def verificar_opciones(numeros):
     elif (num[0] == num[-2]):
         print('Poker')
         
-    elif (num[-1] == num[-2]):
+    elif (num[-1] == num[-2] and num[0] == num[1] == num[2]) or (num[-1] == num[-2] == num[-3] and num[0] == num[1]):
         print('Full')
     
     elif escalera(numeros):

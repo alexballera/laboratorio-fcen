@@ -7,39 +7,37 @@
 
 # CORE DATA SCIENCE LIBRARIES
 # ----------------------------------------------------------------------------
-numpy>=1.24.0                     # Computación numérica y arrays
-pandas>=2.0.0                     # Manipulación y análisis de datos
-scipy>=1.10.0                     # Algoritmos científicos y estadísticos
+numpy==2.3.5                      # Computación numérica y arrays
+pandas==2.3.3                     # Manipulación y análisis de datos
+scipy==1.16.3                     # Algoritmos científicos y estadísticos
 
 # MACHINE LEARNING
 # ----------------------------------------------------------------------------
-scikit-learn>=1.3.0               # Algoritmos de ML y métricas
+scikit-learn==1.7.2               # Algoritmos de ML y métricas
                                   # Incluye: KNN, Random Forest, Decision Trees,
                                   # métricas, train_test_split, cross-validation
 
 # VISUALIZATION
 # ----------------------------------------------------------------------------
-matplotlib>=3.7.0                 # Gráficos y visualizaciones
-seaborn>=0.12.0                   # Gráficos estadísticos avanzados
+matplotlib==3.10.7                # Gráficos y visualizaciones
+seaborn==0.13.2                   # Gráficos estadísticos avanzados
 
 # DATABASE AND SQL
 # ----------------------------------------------------------------------------
-duckdb>=0.8.0                     # SQL analytics en Python
+duckdb==1.4.2                     # SQL analytics en Python
 
 # JUPYTER ECOSYSTEM (OPCIONAL)
 # ----------------------------------------------------------------------------
-jupyter>=1.0.0                    # Jupyter Notebooks
-ipython>=8.0.0                    # Python interactivo mejorado
-ipykernel>=6.0.0                  # Kernel de Python para Jupyter
+jupyter==1.1.1                    # Jupyter Notebooks
 
 # DEVELOPMENT AND UTILITIES
 # ----------------------------------------------------------------------------
-xlrd>=2.0.0                       # Lectura de archivos Excel (.xls)
-openpyxl>=3.1.0                   # Lectura/escritura de archivos Excel (.xlsx)
+xlrd==2.0.2                       # Lectura de archivos Excel (.xls)
+openpyxl==3.1.5                   # Lectura/escritura de archivos Excel (.xlsx)
 
 # STATISTICAL AND ADDITIONAL ANALYSIS
 # ----------------------------------------------------------------------------
-statsmodels>=0.14.0               # Modelos estadísticos (comentado en algunos archivos)
+statsmodels==0.14.5               # Modelos estadísticos (comentado en algunos archivos)
 
 # ============================================================================
 # INSTALACIÓN Y USO
