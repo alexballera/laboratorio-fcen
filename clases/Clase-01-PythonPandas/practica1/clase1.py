@@ -375,4 +375,80 @@ print(pisar_elemento(M, e))
 # =============================================
 # PANDAS: Series & DataFrames
 # =============================================
+# %% DataFrame
+d = {'nombre':['Antonio', 'Brenda', 'Camilo', 'David'],
+     'apellido': ['Restrepo', 'Saenz', 'Torres', 'Urondo'],
+     'lu': ['78/23', '449/22', '111/24', '1/21']}
+
+# Creamos df a partir de un diccionario
+df = pd.DataFrame(data = d)
+
+# Seteamos una columna como index
+df.set_index('lu', inplace=True)
+df
+# %% DataFrame
+# Creamos una Serie a partir de un array
+M = np.array([[11, 1, -5, 3],
+              [10, 5, 6, 7],
+              [3, 8, 10, -1]
+              ])
+
+df2 = pd.DataFrame(data = M)
+df2
+# %%
+df3 = pd.DataFrame(M,
+                   columns = ['a', 'b', 'c', 'd'],
+                   index = ['v1', 'v2', 'v3'])
+
+df3
+# %% DataFrame
+# Creamos un DF a partir de un archivo
+fname = path + 'cronograma_sugerido.csv'
+df4 = pd.read_csv(fname)
+df4
+# %%
+# primeras 5 líneas
+df.head()
+# %%
+# últimas 5 líneas
+df.tail()
+# %%
+# info del df
+df.info()
+# %%
+# tipos de dato
+df.dtypes
+# %%
+# columnas
+df.columns
+# %%
+# indice (id de filas, pueden no ser int)
+df.index
+# %%
+# una descripción
+df.describe()
+# %%
+# solo una columna (sin lista) da una Serie
+df['nombre']
+# %%
+# selecciono algunas columnas (una lista) por nombre
+df[['nombre', 'apellido']]
+# %%
+# acceso a la fila i-ésima
+df.iloc[2]
+# %%
+# filas 1 a 2
+df.iloc[1:3]
+# %%
+# acceso a fila por el index
+df.loc['449/22']
+# %%
+# acceso a fila Y columna con index y nombre de col
+df.loc['449/22', 'nombre']
+# %%
+# muestra una fila random
+df.sample()
+# %%
+# muestra n filas random
+df.sample(n = 2)
 # %%
