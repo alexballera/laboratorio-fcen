@@ -4,7 +4,7 @@ Editor de Spyder
 
 Este es un archivo temporal.
 """
-
+# %%
 feriados = {}
 feriados[(1,1)] = 'Año nuevo'
 feriados[(1,5)] = 'Día del trabajador'
@@ -19,3 +19,4 @@ for t in zip([1,2,3,4], [5,6,7,8]):
 
 cuadrados2 = dict(zip([1,2,3,4], [5,6,7,8]))
 print(cuadrados2[1])
+# %%
