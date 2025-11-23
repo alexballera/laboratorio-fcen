@@ -128,7 +128,13 @@ nuevo_doc.close()
 Utilizando el archivo cronograma_sugerido , armar una lista de las
 materias del cronograma, llamada “lista_materias 
 '''
-nombre_archivo = 'cronograma_sugerido.csv'
+name = 'cronograma_sugerido.csv'
+file = open(path + name, 'rt')
+lineas = csv.reader(file)
+header = next(file)
+
+lista_materias = [linea[1] for linea in lineas]
+print(lista_materias)
 # %% “cuantas_materias(n)”
 '''
 Luego, definir una función “cuantas_materias (n)” que, dado un
@@ -136,5 +142,61 @@ número de cuatrimestre (n entre 3 y 8), devuelva la cantidad de
 materias a cursar en ese cuatrimestre. Por ejemplo:
 cuantas_materias(5) debe devolver 3.
 '''
+def cuantas_materias(n):
+    if not (3 <= n <= 8):
+        print('Debe introducir un cuatrimestre entre 3 y 8, ambos inclusive')
+        return
+    
+    name = 'cronograma_sugerido.csv'
+    file = open(path + name, 'rt')
+    next(file)
+    lineas = csv.reader(file)
+    lista_materias = [linea[1] for linea in lineas if linea[0] == str(n)]
 
+    return len(lista_materias)
+
+cuantas_materias(5)
+# %% materias_cuatrimestre(nombre_archivo, n)
+'''
+Definir una función materias_cuatrimestre(nombre_archivo, n) que recorra el
+archivo indicado, conteniendo información de un cronograma sugerido de cursada,
+y devuelva una lista de diccionarios con la información de las materias sugeridas
+para cursar el n-ésimo cuatrimestre.
+'''
+# diccionario de diccionarios
+def materias_cuatrimestre(nombre_archivo, n):
+    if not (3 <= n <= 8):
+        return 'Debe introducir un cuatrimestre entre 3 y 8, ambos inclusive'
+
+    
+    file = open(path + nombre_archivo, 'rt')
+    next(file)
+    lineas = csv.reader(file)
+    materias = {}
+    i = 0
+    for linea in lineas:
+        if linea[0] == str(n):
+            i += 1
+            materias[f'materia_sugerida_{i}'] = {'asignatura': linea[1], 'correlatividad': linea[2]}
+            
+    return materias
+    
+materias_cuatrimestre('cronograma_sugerido.csv', 3)
+# %% lista de diccionarios
+def materias_cuatrimestre2(nombre_archivo, n):
+    if not (3 <= n <= 8):
+        return 'Debe introducir un cuatrimestre entre 3 y 8, ambos inclusive'
+    
+    materias = []
+    with open(path + nombre_archivo, 'rt') as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        for row in reader:
+            if row[0] == str(n):
+                materia = dict(zip(header, row))
+                materias.append(materia)
+    
+    return materias
+
+materias_cuatrimestre2('cronograma_sugerido.csv', 3)
 # %%
