@@ -115,8 +115,9 @@ Cuota = 2684.11
 TEM = TNA / m
 
 # a.- Total a pagar
-total_pagar = Cuota * t * m
-print(f'a.-Monto total a pagar {total_pagar:.2f}')
+def total_pagar_a(cuota, t, m):
+    return cuota * t * m
+print(f'a.-Monto total a pagar {total_pagar_a(Cuota, t, m):.2f}')
 
 # b.- 
 monto_adicional = 1000
@@ -129,30 +130,92 @@ def interes(monto, r):
 def capital(cuota, intereses):
     return cuota - intereses
 
-# año 1
-pago_acumulado = 0
-capital_acumulado = 0
-interes_acumulado = 0
+def total_pagar_b(M, C, r):
+    # año 1
+    pago_acumulado = 0
+    capital_acumulado = 0
+    interes_acumulado = 0
 
-for i in range(12):
-    cuota = monto_adicional + Cuota
-    intereses = interes(Monto, TEM)
-    interes_acumulado += intereses
-    capital_pagado = capital(cuota, intereses)
-    capital_acumulado += capital_pagado
-    Monto -= capital_pagado
-    pago_acumulado = capital_acumulado
-
-# año 2 al 30
-for i in range(12*29):
-    if Monto > 0:
-        cuota = Cuota
-        intereses = interes(Monto, TEM)
+    for i in range(12):
+        cuota = monto_adicional + C
+        intereses = interes(M, r)
         interes_acumulado += intereses
         capital_pagado = capital(cuota, intereses)
         capital_acumulado += capital_pagado
-        Monto -= capital_pagado
-        pago_acumulado = capital_acumulado + interes_acumulado
+        M -= capital_pagado
+        pago_acumulado = capital_acumulado
 
-print(f'b.-Monto total a pagar {pago_acumulado:.2f}')
+    # año 2 al 30
+    for i in range(12*29):
+        if M > 0:
+            cuota = C
+            intereses = interes(M, r)
+            interes_acumulado += intereses
+            capital_pagado = capital(cuota, intereses)
+            capital_acumulado += capital_pagado
+            M -= capital_pagado
+            pago_acumulado = capital_acumulado + interes_acumulado
+    
+    return pago_acumulado
+
+print(f'b.-Monto total a pagar {total_pagar_b(Monto, Cuota, TEM):.2f}')
+
+# c.-
+monto_extra = 1000
+n = 4*m # años desde el año 6
+inicio = 5*12
+fin = inicio + n
+
+def total_pagar_c(M, C, r, pago_extra_monto, pago_extra_mes_comienzo, pago_extra_mes_fin):
+    # año 1
+    pago_acumulado = 0
+    capital_acumulado = 0
+    interes_acumulado = 0
+    meses = 0
+    for i in range(pago_extra_mes_comienzo):
+        cuota = Cuota
+        intereses = interes(M, r)
+        interes_acumulado += intereses
+        capital_pagado = capital(cuota, intereses)
+        capital_acumulado += capital_pagado
+        M -= capital_pagado
+        pago_acumulado = capital_acumulado
+        meses += 1
+        
+    for i in range(pago_extra_mes_fin - pago_extra_mes_comienzo):
+        cuota = Cuota + pago_extra_monto
+        intereses = interes(M, r)
+        interes_acumulado += intereses
+        capital_pagado = capital(cuota, intereses)
+        capital_acumulado += capital_pagado
+        M -= capital_pagado
+        pago_acumulado = capital_acumulado
+        meses += 1
+        
+    for i in range(30*12 - pago_extra_mes_fin):
+        if M > 0:
+            cuota = C
+            intereses = interes(M, r)
+            interes_acumulado += intereses
+            capital_pagado = capital(cuota, intereses)
+            capital_acumulado += capital_pagado
+            M -= capital_pagado
+            pago_acumulado = capital_acumulado + interes_acumulado
+            meses += 1
+        
+    return pago_acumulado, meses
+
+totalc = total_pagar_c(Monto, Cuota, TEM, monto_extra, inicio, fin)
+
+print(f'c.-Monto total a pagar {totalc[0]:.2f}')
+print(f'c.-Meses requeridos {totalc[1]:.2f}')
 # %%
+def traductor_geringoso(lista: list):
+    diccionario = {}
+    
+    for item in lista:
+        diccionario[item] = cadena_geringosa_for(item)[1]
+    return diccionario
+
+lista = ['banana', 'manzana', 'mandarina']
+print(traductor_geringoso(lista))
