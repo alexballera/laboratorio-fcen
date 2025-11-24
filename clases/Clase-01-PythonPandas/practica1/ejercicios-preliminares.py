@@ -210,6 +210,7 @@ totalc = total_pagar_c(Monto, Cuota, TEM, monto_extra, inicio, fin)
 print(f'c.-Monto total a pagar {totalc[0]:.2f}')
 print(f'c.-Meses requeridos {totalc[1]:.2f}')
 # %%
+# Ejercicio 8
 def traductor_geringoso(lista: list):
     diccionario = {}
     
@@ -219,3 +220,12 @@ def traductor_geringoso(lista: list):
 
 lista = ['banana', 'manzana', 'mandarina']
 print(traductor_geringoso(lista))
+# %%
+# Ejercicio 9
+
+# Imprime la tabla del 0 al 9 usando solo sumas (sin multiplicación).
+for i in range(10):
+    fila = [0]
+    for _ in range(1, 10):
+        fila.append(fila[-1] + i)
+    print(f"{i}: " + "  ".join(str(x) for x in fila))
