@@ -184,7 +184,7 @@ def monto_total():
     print('monto_total con excedente de deuda:', monto_total_con_excedente)
     print('meses:', meses )
 
-# monto_total()
+monto_total()
 
 # Parte c
 def calculo_financiero(monto, cuota, r, c):
@@ -237,7 +237,7 @@ def monto_total_params(pago_extra_monto, pago_extra_mes_comienzo, pago_extra_mes
     return format_number(monto_total_pagado)
         
 
-# print('Ejercicio 7c: ', monto_total_params(1000, 61, 72))
+print('Ejercicio 7c: ', monto_total_params(1000, 61, 72))
 
 # Ejercicio 8
 def traductor_geringoso(lista):
