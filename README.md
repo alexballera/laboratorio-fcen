@@ -108,8 +108,8 @@ El curso utiliza diversos datasets reales para ejercicios prácticos:
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/alexballera/laboratorio-datos-fcen.git
-cd laboratorio-datos-fcen
+git clone https://github.com/alexballera/laboratorio-fcen.git
+cd laboratorio-fcen
 
 # 2. Crear y activar entorno virtual
 python -m venv .venv
