@@ -1,206 +1,89 @@
 # 📊 Laboratorio de Datos - FCEn UBA
 
-Repositorio del curso **Laboratorio de Datos** de la Facultad de Ciencias Exactas y Naturales (FCEn) - Universidad de Buenos Aires (UBA).
+Repositorio del curso **Laboratorio de Datos** (FCEn UBA). Contiene notebooks, scripts y datasets para prácticas y evaluaciones del curso.
 
-Este proyecto contiene material completo para un curso integral de ciencia de datos que cubre desde fundamentos de programación hasta técnicas avanzadas de machine learning.
+## Estado y objetivo
+Este repositorio es material docente: ejemplos, ejercicios prácticos y trabajos. Está optimizado para uso en clases y laboratorios; las instrucciones aquí permiten configurar el entorno local y ejecutar los materiales.
 
-## 🎯 Descripción del Curso
-
-El curso está diseñado para proporcionar una formación completa en ciencia de datos, cubriendo todo el pipeline desde la adquisición de datos hasta el modelado predictivo. Se enfoca en aplicaciones prácticas usando Python y herramientas estándar de la industria.
-
-## 📚 Contenido del Curso
-
-### **Módulo 1: Fundamentos**
-
-- **Clase 00**: Presentación de la Materia
-- **Clase 01**: Python y Pandas - Manipulación y análisis de datos
-- **Clase 02**: Introducción a la Metodología de análisis de datos
-
-### **Módulo 2: Bases de Datos y SQL**
-
-- **Clase 03**: Modelado de Datos - Diagramas Entidad-Relación (DER)
-- **Clase 04**: Modelo Relacional
-- **Clases 05-07**: Álgebra Relacional y SQL
-- **Clases 08-09**: Normalización de bases de datos
-
-### **Módulo 3: Análisis y Visualización**
-
-- **Clase 10**: Calidad de Datos
-- **Clases 11-12**: Visualización y Análisis Exploratorio de Datos (AED)
-
-### **Módulo 4: Machine Learning**
-
-- **Clase 13**: Introducción al Modelado
-- **Clases 14-15**: Clasificación (Árboles de Decisión, KNN, Random Forest)
-- **Clase 16**: Regresión Lineal Simple (RLS)
-- **Clase 17**: Regresión KNN
-- **Clase 18**: Selección de Modelos y Validación Cruzada
-- **Clase 19**: Aprendizaje No Supervisado (Clustering)
-- **Clases 20-21**: Temas avanzados
-
-## 🛠️ Tecnologías Utilizadas
-
-- **Python 3.x** - Lenguaje principal
-- **Pandas** - Manipulación y análisis de datos
-- **NumPy** - Computación numérica
-- **Matplotlib/Seaborn** - Visualización de datos
-- **Scikit-learn** - Machine Learning
-- **DuckDB** - Consultas SQL en Python
-- **SQL** - Gestión de bases de datos relacionales
-
-## 📁 Estructura del Proyecto
-
-```text
-clases/
-├── Clase-00-PresentacionMateria/
-├── Clase-01-PythonPandas/           # Fundamentos de Python y Pandas
-├── Clase-02-introMetodología/       # Metodología de análisis
-├── Clase-03-ModeladoDeDatos-DER/    # Diagramas Entidad-Relación
-├── Clase-04-ModeloRelacional/       # Bases de datos relacionales
-├── Clase-05-06-07-AlgebraRelacional-SQL/  # SQL y álgebra relacional
-├── Clase-08--09-Normalizacion/      # Normalización de BD
-├── Clase-10-CalidadDeDatos/         # Calidad y limpieza de datos
-├── Clase-11-12-Visualizacion AED/   # Análisis exploratorio
-├── Clase-13-IntroModelado/          # Introducción al ML
-├── Clase-14-15-Clasificacion/       # Algoritmos de clasificación
-├── Clase-16-RLS/                    # Regresión lineal
-├── Clase-17-RegresiónKNN/          # Regresión KNN
-├── Clase-18-SeleccionModelos/       # Selección y validación
-├── Clase-19-NoSupervisado/          # Clustering
-├── clase-20/ & clase-21/            # Temas avanzados
-└── evaluaciones/                    # Trabajos prácticos y parciales
-```
-
-## 📊 Datasets Incluidos
-
-El curso utiliza diversos datasets reales para ejercicios prácticos:
-
-- **Arbolado urbano** - Análisis de espacios verdes en Buenos Aires
-- **Wine Quality** - Clasificación de calidad de vinos
-- **Iris** - Conjunto de datos clásico para clasificación
-- **Titanic** - Predicción de supervivencia
-- **Tips** - Análisis de propinas en restaurantes
-- **Datos epidemiológicos** - Casos de dengue y zika
-- **Movilidad urbana** - Encuestas de transporte
-- **MNIST modificado** - Reconocimiento de dígitos con ruido
-
-> **Nota**: Los datasets grandes (>50MB) como `mnist_c_fog_tp.csv` y PDFs de bibliografía están excluidos del repositorio. Contactar al autor para obtener estos archivos si son necesarios para reproducir los experimentos.
-
-## 🎓 Evaluaciones
-
-### **Trabajo Práctico 1 (TP1)**
-
-- **Tema**: Diseño de bases de datos relacionales
-- **Contenido**: Modelado DER, normalización, implementación SQL
-- **Archivos**: `evaluaciones/tp1/`
-
-### **Trabajo Práctico 2 (TP2)**
-
-- **Tema**: Clasificación y selección de modelos
-- **Dataset**: MNIST con ruido (fog)
-- **Técnicas**: KNN, Random Forest, Árboles de Decisión
-- **Metodología**: Validación cruzada, análisis de métricas
-- **Archivos**: `evaluaciones/tp2/`
-
-## 🚀 Configuración del Entorno
-
-### **Instalación Automática (Recomendado)**
+## Quickstart (rápido)
+1. Clonar el repositorio:
 
 ```bash
-# 1. Clonar el repositorio
 git clone https://github.com/alexballera/laboratorio-fcen.git
 cd laboratorio-fcen
+```
 
-# 2. Crear y activar entorno virtual
+2. Crear y activar entorno virtual (recomendado):
+
+```bash
 python -m venv .venv
-source .venv/bin/activate  # Linux/Mac
+source .venv/bin/activate  # Linux / macOS
 # .venv\Scripts\activate   # Windows
+```
 
-# 3. Instalar todas las dependencias
+3. Instalar dependencias:
+
+```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
+```
 
-# 4. Verificar instalación
+4. Verificar instalación mínima:
+
+```bash
 python test_environment.py
 ```
 
-### **Instalación Manual**
+## Estructura principal
+
+`clases/` contiene los materiales organizados por sesión. Cada subdirectorio tiene ejemplos y prácticas:
+
+- `Clase-01-PythonPandas/`: Fundamentos de Python y Pandas
+- `Clase-03-ModeladoDeDatos-DER/`: Modelado entidad-relación
+- `evaluaciones/`: Trabajos prácticos y sus entregas
+
+Explora `clases/` para encontrar notebooks y scripts asociados a cada clase.
+
+## Notebooks y ejecución reproducible
+- Preferir ejecutar notebooks desde el entorno virtual (`.venv`) para garantizar dependencias correctas.
+- Antes de abrir notebooks en un entorno gestionado, ejecutar `configure_python_environment` y `configure_notebook` si están disponibles en tu plataforma para apuntar el kernel al `.venv`.
+
+## Ejecutar ejemplos y scripts
+Ejemplo para ejecutar un script de la clase 1:
 
 ```bash
-# Instalar dependencias principales individualmente
-pip install pandas numpy matplotlib seaborn scikit-learn duckdb jupyter
-```
-
-### **Verificación del Entorno**
-
-```bash
-# Verificación rápida
-python -c "import pandas, numpy, sklearn, matplotlib, seaborn, duckdb; print('✅ Entorno OK')"
-```
-
-> 📋 **Ver documentación completa**: [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)
-
-## 🗂️ Navegación Recomendada
-
-1. **Comenzar con**: `Clase-01-PythonPandas/` para fundamentos
-2. **Continuar con**: Las clases en orden numérico
-3. **Practicar con**: Los datasets en cada directorio de práctica
-4. **Evaluar con**: Los trabajos prácticos en `evaluaciones/`
-
-### **Ejecutar Ejemplos**
-
-```bash
-# Activar entorno virtual (si no está activado)
 source .venv/bin/activate
-
-# Navegar a una clase específica
-cd clases/Clase-01-PythonPandas/practica01/
-
-# Ejecutar scripts de ejemplo
-python ejercicios_clase1.py
-python pandas_script1.py
+python clases/Clase-01-PythonPandas/practica/pandas_script1.py
 ```
 
-### **Trabajar con Jupyter Notebooks**
+## Tests y verificación
+- `test_environment.py` comprueba que las dependencias principales están instaladas. Ejecutarlo tras instalar dependencias.
+- Si se añaden tests adicionales, usar `pytest -q` (instalar `pytest` si es necesario).
 
-```bash
-# Activar entorno e iniciar Jupyter
-source .venv/bin/activate
-jupyter notebook
-```
+## Contribuciones
+Este repositorio admite contribuciones orientadas a mejorar la docencia:
 
-## 📁 Archivos de Configuración
+- Corregir o mejorar notebooks y scripts
+- Añadir ejercicios y datasets (evitar subir datos sensibles)
+- Actualizar `requirements.txt` cuando agregues dependencias
 
-- `requirements.txt` - Dependencias del proyecto
-- `test_environment.py` - Script de verificación del entorno
-- `ENVIRONMENT_SETUP.md` - Documentación detallada del entorno
-- `.gitignore` - Archivos excluidos del repositorio
+Antes de enviar un PR:
 
-## 📈 Características Destacadas
+1. Ejecutar `python test_environment.py` y/o `pytest -q`.
+2. Verificar que los notebooks relevantes se ejecutan en orden.
+3. Añadir notas en el PR sobre cambios en dependencias o datos.
 
-- **📖 Progresión pedagógica clara**: Desde conceptos básicos hasta técnicas avanzadas
-- **🔬 Enfoque práctico**: Ejercicios con datos reales
-- **🛠️ Herramientas estándar**: Tecnologías usadas en la industria
-- **📊 Análisis completo**: Desde limpieza hasta modelado
-- **🎯 Aplicaciones reales**: Casos de uso del mundo real
-- **📝 Documentación detallada**: Comentarios y explicaciones en el código
+## Recursos
+- `ENVIRONMENT_SETUP.md`: instrucciones extendidas de instalación y compatibilidad.
+- `requirements.txt`: lista de paquetes necesarios.
 
-## 🤝 Contribuciones
-
-Este es un proyecto educativo. Las contribuciones son bienvenidas para:
-
-- Mejorar documentación
-- Agregar ejemplos adicionales
-- Corregir errores
-- Actualizar dependencias
-
-## 📄 Licencia
-
-MIT License - ver archivo `LICENSE` para más detalles.
-
-## 👨‍🎓 Autor
-
-**Alexander Ballera** - Estudiante de Ciencias de Datos, FCEn UBA
+## Licencia y autor
+- Licencia: MIT (ver `LICENSE`)
+- Autor: Alexander Ballera
 
 ---
 
-*Este repositorio representa el trabajo realizado durante el curso de Laboratorio de Datos en la FCEn UBA, mostrando la evolución del aprendizaje desde conceptos básicos hasta implementaciones avanzadas de machine learning.*
+Si quieres, puedo:
+
+- Generar una checklist automatizada para ejecutar antes de un PR.
+- Crear un script `make setup` o `scripts/setup.sh` que automatice el Quickstart.
