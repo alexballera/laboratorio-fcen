@@ -46,6 +46,14 @@ def especies(lista_arboles):
 
     return arboles
 # %% Ejercicio 3
+def contar_ejemplares(lista_arboles):
+    arboles = []
+    
+    {arboles.append(arbol['nombre_com']) for arbol in lista_arboles}
+    
+    result = {i:arboles.count(i) for i in arboles}
+        
+    return result
 
 # %% Ejercicio 4
 
@@ -56,21 +64,24 @@ def especies(lista_arboles):
 # %% main
 if __name__ == '__main__':
     # Ejercicio 1
+    print('='*40)
     path = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-espacio-publico-e-higiene-urbana/arbolado-espacios-verdes/arbolado-en-espacios-verdes.csv'
     path2 = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/arbolado-en-espacios-verdes.csv'
     parque = 'GENERAL PAZ'
-    lista1, lista2, lista3 = leer_parque(path, parque)
-    print('='*40)
+    lista1, lista2, lista3 = leer_parque(path2, parque)
     print(f"Ejercicio1: Árboles en {parque}: {len(lista1)}")
     print(f'Lista en {parque}: {lista2}\n')
     
     # Ejercicio 2
-    arboles = especies(lista3)
     print('='*40)
+    arboles = especies(lista3)
     print(f"Ejercicio2: Especies en {parque}: {len(arboles)}")
     print(f'arboles: {arboles}\n')
     
     # Ejercicio 3
+    print('='*40)
+    cantidad_especies = contar_ejemplares(lista1)
+    print(f'Ejercicio3 {cantidad_especies}')
     
     # Ejercicio 4
     
