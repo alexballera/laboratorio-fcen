@@ -7,8 +7,8 @@
 import numpy as np
 import pandas as pd
 # %% Ejercicio 1
-def leer_parque(path, nombre_archivo, parque):
-    df = pd.read_csv(path + nombre_archivo)
+def leer_parque(path, parque):
+    df = pd.read_csv(path)
 
     arboles_df = df[df['espacio_ve'] == parque]
     
@@ -56,15 +56,19 @@ def especies(lista_arboles):
 # %% main
 if __name__ == '__main__':
     # Ejercicio 1
-    path = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/'
-    nombre_archivo = 'arbolado-en-espacios-verdes.csv'
+    path = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-espacio-publico-e-higiene-urbana/arbolado-espacios-verdes/arbolado-en-espacios-verdes.csv'
+    path2 = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/arbolado-en-espacios-verdes.csv'
     parque = 'GENERAL PAZ'
-    lista1, lista2, lista3 = leer_parque(path, nombre_archivo, parque)
-    print(f"Árboles en {parque}: {len(lista1)}")
+    lista1, lista2, lista3 = leer_parque(path, parque)
+    print('='*40)
+    print(f"Ejercicio1: Árboles en {parque}: {len(lista1)}")
+    print(f'Lista en {parque}: {lista2}\n')
     
     # Ejercicio 2
-    arboles = especies(lista1)
-    print(f"Especies en {parque}: {len(arboles)}")
+    arboles = especies(lista3)
+    print('='*40)
+    print(f"Ejercicio2: Especies en {parque}: {len(arboles)}")
+    print(f'arboles: {arboles}\n')
     
     # Ejercicio 3
     
