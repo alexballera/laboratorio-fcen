@@ -13,28 +13,29 @@ def leer_parque(path, nombre_archivo, parque):
     arboles_df = df[df['espacio_ve'] == parque]
     
     # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_dict.html
-    dict = arboles_df.to_dict(orient='records')
-    
-    lista = []
-    for _, row in arboles_df.iterrows():
-        # construir dict usando las columnas y los valores de la fila
-        registro = {col: row[col] for col in arboles_df.columns}
-        lista.append(registro)
+    lista1 = arboles_df.to_dict(orient='records')
     
     columnas = arboles_df.columns
     lista2 = []
-    arbol = {}
+    
+    # construir dict usando las columnas y los valores de la fila
+    for _, row in arboles_df.iterrows():
+        registro = {col: row[col] for col in columnas}
+        lista2.append(registro)
+    
+    # construir dict usando las columnas y los valores de la fila
+    lista3 = []
     i = 0
     
     for _, row in arboles_df.iterrows():
+        registro = {}
         for item in row:
-            arbol[columnas[i]] = item
+            registro[columnas[i]] = item
             i += 1
-        arbol_copy = arbol.copy()
-        lista2.append(arbol_copy)
+        lista3.append(registro)
         i = 0
 
-    return dict, lista, lista2
+    return lista1, lista2, lista3
 
 # %%
 
@@ -42,7 +43,7 @@ if __name__ == '__main__':
     path = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/'
     nombre_archivo = 'arbolado-en-espacios-verdes.csv'
     parque = 'GENERAL PAZ'
-    dict, lista, lista2 = leer_parque(path, nombre_archivo, parque)
-    print(f"Árboles en {parque}: {len(lista)}")
+    lista1, lista2, lista3 = leer_parque(path, nombre_archivo, parque)
+    print(f"Árboles en {parque}: {len(lista1)}")
 
 # %%
