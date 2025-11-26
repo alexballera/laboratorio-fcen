@@ -4,45 +4,67 @@
 @author: Alex Ballera
 """
 # %% Importo las librerías
-import numpy as np
+from pathlib import Path
 import pandas as pd
+
 # %% Ejercicio 1
 def leer_parque(nombre_archivo, parque):
-    path = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/'
-    archivo = nombre_archivo
-    df = pd.read_csv(path + archivo)
+    """Leer `nombre_archivo` y devolver una lista de registros (dict)
+    con los árboles que pertenecen al `parque` indicado.
 
+    `nombre_archivo` puede ser una ruta absoluta o un nombre relativo. Si
+    no se encuentra como ruta absoluta, se buscará relativo al directorio
+    donde está este script.
+    """
+    path = Path(nombre_archivo)
+    if not path.is_file():
+        path = Path(__file__).resolve().parent / nombre_archivo
+
+    df = pd.read_csv(path)
     arboles_df = df[df['espacio_ve'] == parque]
-    
-    # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_dict.html
-    dict = arboles_df.to_dict(orient='records')
-    
-    lista = []
-    for _, row in arboles_df.iterrows():
-        # construir dict usando las columnas y los valores de la fila
-        registro = {col: row[col] for col in arboles_df.columns}
-        lista.append(registro)
-    
-    columnas = arboles_df.columns
-    lista2 = []
-    arbol = {}
-    i = 0
-    
-    for _, row in arboles_df.iterrows():
-        for item in row:
-            arbol[columnas[i]] = item
-            i += 1
-        arbol_copy = arbol.copy()
-        lista2.append(arbol_copy)
-        i = 0
+    registros = arboles_df.to_dict(orient='records')
+    return registros
 
-    return dict, lista, lista2
+
+def main():
+    nombre_archivo = 'arbolado-en-espacios-verdes.csv'
+    parque = 'GENERAL PAZ'
+    registros = leer_parque(nombre_archivo, parque)
+    print(f"Árboles en {parque}: {len(registros)}")
+
+
+def ejecutar_ejercicio_1():
+    """Función que actúa como la 'celda' del ejercicio 1.
+
+    Se puede llamar desde la línea de comandos con `--ejercicio 1`
+    o directamente desde un REPL/import.
+    """
+    nombre_archivo = 'arbolado-en-espacios-verdes.csv'
+    parque = 'GENERAL PAZ'
+    registros = leer_parque(nombre_archivo, parque)
+    print(f"Árboles en {parque}: {len(registros)}")
+
+
+def ejecutar_todos():
+    ejecutar_ejercicio_1()
 
 
 if __name__ == '__main__':
-    nombre_archivo = 'arbolado-en-espacios-verdes.csv'
-    parque = 'GENERAL PAZ'
-    dict, lista, lista2 = leer_parque(nombre_archivo, parque)
-    print(f"Árboles en {parque}: {len(lista)}")
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Ejercicios prácticos - Clase 01')
+    parser.add_argument('-e', '--ejercicio', help='Número de ejercicio a ejecutar (ej: 1) o "all"', default=None)
+    args = parser.parse_args()
+
+    if args.ejercicio is None:
+        # comportamiento por defecto: ejecutar main (demostración rápida)
+        main()
+    else:
+        if args.ejercicio in ('1', '01'):
+            ejecutar_ejercicio_1()
+        elif args.ejercicio in ('all', 'todos'):
+            ejecutar_todos()
+        else:
+            print(f"Ejercicio '{args.ejercicio}' no reconocido.")
 
 # %%
