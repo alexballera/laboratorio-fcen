@@ -7,10 +7,8 @@
 import numpy as np
 import pandas as pd
 # %% Ejercicio 1
-def leer_parque(nombre_archivo, parque):
-    path = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/'
-    archivo = nombre_archivo
-    df = pd.read_csv(path + archivo)
+def leer_parque(path, nombre_archivo, parque):
+    df = pd.read_csv(path + nombre_archivo)
 
     arboles_df = df[df['espacio_ve'] == parque]
     
@@ -38,11 +36,13 @@ def leer_parque(nombre_archivo, parque):
 
     return dict, lista, lista2
 
+# %%
 
 if __name__ == '__main__':
+    path = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/'
     nombre_archivo = 'arbolado-en-espacios-verdes.csv'
     parque = 'GENERAL PAZ'
-    dict, lista, lista2 = leer_parque(nombre_archivo, parque)
+    dict, lista, lista2 = leer_parque(path, nombre_archivo, parque)
     print(f"Árboles en {parque}: {len(lista)}")
 
 # %%
