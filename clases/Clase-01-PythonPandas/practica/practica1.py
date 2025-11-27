@@ -85,6 +85,9 @@ def contar_ejemplares(lista_arboles):
     return result, conteo, conteo2
 
 # %% Ejercicio 4
+def obtener_altura(lista_arboles, especie):
+    alturas = [arbol['altura_tot'] for arbol in lista_arboles if arbol.get(especie)]
+    return alturas
 
 # %% Ejercicio 5
 
@@ -99,22 +102,23 @@ if __name__ == '__main__':
     parque = 'GENERAL PAZ'
     lista1, lista2, lista3 = leer_parque(path2, parque)
     print(f"Ejercicio1: Árboles en {parque}: {len(lista1)}")
-    print(f'Lista en {parque}: {lista2}\n')
     
     # Ejercicio 2
     print('='*40)
     arboles = especies(lista3)
     print(f"Ejercicio2: Especies en {parque}: {len(arboles)}")
-    print(f'arboles: {arboles}\n')
     
     # Ejercicio 3
     print('='*40)
     cantidad_especies = contar_ejemplares(lista1)
-    print(f'Ejercicio3 {cantidad_especies}')
     # .get('Jacarandá', 0) busca la clave, si no existe devuelve 0 (evita KeyError)
-    print(f"Jacarandá: {cantidad_especies[0].get('Jacarandá', 0)}")
+    especie = 'Jacarandá'
+    print(f"Ejercicio 3: Cant de {especie} = {cantidad_especies[0].get(especie, 0)}")
     
     # Ejercicio 4
+    print('='*40)
+    alturas = obtener_altura(lista2, especie)
+    print(f'Ejercicio 4: alturas de {especie}: {alturas} ')
     
     # Ejercicio 5
     
