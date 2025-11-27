@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 @author: Alex Ballera
+https://docs.python.org/es/3.14/library/index.html
+https://pandas.pydata.org/docs/reference/index.html
+https://numpy.org/doc/stable/reference/index.html
+https://docs.python.org/es/3.14/library/collections.html#
 """
 # %% Importo las librerías
 import numpy as np
@@ -91,25 +95,40 @@ def obtener_altura(lista_arboles, especie):
     return alturas
 
 def promedio(lista_numeros):
-    return sum(lista_numeros) / len(lista_numeros)
+    return round(sum(lista_numeros) / len(lista_numeros), 2)
 
 def maximo(lista_numeros):
-    return max(lista_numeros)
+    return round(max(lista_numeros), 2)
 
-def promedios(parques):
-    return
+def promedios(path, parques, especie):
+    medida = ['max', 'prom']
+    maximos = []
+    promedios = []
+    medidas = []
 
-# %% Ejercicio 5
+    for parque in parques:
+        lista_arboles = leer_parque(path, parque)[0]
+        alturas = obtener_altura(lista_arboles, especie)
 
-# %% Ejercicio 6
+        maximos.append(maximo(alturas))
+        promedios.append(promedio(alturas))
+
+    medidas.append(maximos)
+    medidas.append(promedios)
+    
+    df = pd.DataFrame(np.array(medidas), columns=parques, index=medida)
+
+    return df
 
 # %% main
 if __name__ == '__main__':
-    # Ejercicio 1
-    print('='*40)
+    especie = 'Jacarandá'
     path = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-espacio-publico-e-higiene-urbana/arbolado-espacios-verdes/arbolado-en-espacios-verdes.csv'
     path2 = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/arbolado-en-espacios-verdes.csv'
     parque = 'GENERAL PAZ'
+
+    # Ejercicio 1
+    print('='*40)
     lista1, lista2, lista3, df = leer_parque(path2, parque)
     print(f"Ejercicio1: Árboles en {parque}: {len(lista1)}")
     
@@ -122,7 +141,6 @@ if __name__ == '__main__':
     print('='*40)
     cantidad_especies = contar_ejemplares(lista1)
     # .get('Jacarandá', 0) busca la clave, si no existe devuelve 0 (evita KeyError)
-    especie = 'Jacarandá'
     print(f"Ejercicio 3: Cant de {especie} = {cantidad_especies[0].get(especie, 0)}")
     
     # Ejercicio 4
@@ -134,9 +152,14 @@ if __name__ == '__main__':
     print(f'Ejercicio 4: máximo de {especie}: {h_maximo} ')
     print(f'Ejercicio 4: promedio de {especie}: {h_mean} ')
     
-    parques = ['GENERAL PAZ', 'CENTENARIO', 'PALERMO VIEJO']
-    proms = promedios(parques)
-    print(f'Ejercicio 4: promedios {parques}: {proms} ')
+    parques = ['GENERAL PAZ', 'ANDES, LOS', 'CENTENARIO']
+    proms = promedios(path2, parques, especie)
+    print(f"""
+
+Ejercicio 4:
+Métricas {especie}:
+              
+    {proms} """)
     
     # Ejercicio 5
     
