@@ -37,7 +37,7 @@ def leer_parque(path, parque):
         lista3.append(registro)
         i = 0
     
-    return lista1, lista2, lista3
+    return lista1, lista2, lista3, df
 
 # %% Ejercicio 2
 def especies(lista_arboles):
@@ -86,8 +86,18 @@ def contar_ejemplares(lista_arboles):
 
 # %% Ejercicio 4
 def obtener_altura(lista_arboles, especie):
-    alturas = [arbol['altura_tot'] for arbol in lista_arboles if arbol.get(especie)]
+    alturas = [float(arbol['altura_tot']) for arbol in lista_arboles if arbol.get('nombre_com') == especie]
+        
     return alturas
+
+def promedio(lista_numeros):
+    return sum(lista_numeros) / len(lista_numeros)
+
+def maximo(lista_numeros):
+    return max(lista_numeros)
+
+def promedios(parques):
+    return
 
 # %% Ejercicio 5
 
@@ -100,7 +110,7 @@ if __name__ == '__main__':
     path = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-espacio-publico-e-higiene-urbana/arbolado-espacios-verdes/arbolado-en-espacios-verdes.csv'
     path2 = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/arbolado-en-espacios-verdes.csv'
     parque = 'GENERAL PAZ'
-    lista1, lista2, lista3 = leer_parque(path2, parque)
+    lista1, lista2, lista3, df = leer_parque(path2, parque)
     print(f"Ejercicio1: Árboles en {parque}: {len(lista1)}")
     
     # Ejercicio 2
@@ -118,7 +128,15 @@ if __name__ == '__main__':
     # Ejercicio 4
     print('='*40)
     alturas = obtener_altura(lista2, especie)
+    h_maximo = maximo(alturas)
+    h_mean = promedio(alturas)
     print(f'Ejercicio 4: alturas de {especie}: {alturas} ')
+    print(f'Ejercicio 4: máximo de {especie}: {h_maximo} ')
+    print(f'Ejercicio 4: promedio de {especie}: {h_mean} ')
+    
+    parques = ['GENERAL PAZ', 'CENTENARIO', 'PALERMO VIEJO']
+    proms = promedios(parques)
+    print(f'Ejercicio 4: promedios {parques}: {proms} ')
     
     # Ejercicio 5
     
