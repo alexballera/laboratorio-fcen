@@ -120,28 +120,44 @@ def promedios(path, parques, especie):
 
     return df
 
+# %% Ejercicio 5
+def obtener_inclinaciones(lista_arboles, especie):
+    inclinaciones = [arbol['inclinacio'] for arbol in lista_arboles if arbol.get('nombre_com') == especie]
+    return inclinaciones
+
+# %% Ejercicio 6
+def especimen_mas_inclinado(lista_arboles):
+    inclinacion = 0
+    for i, arbol in enumerate(lista_arboles):
+        if arbol['inclinacio'] >= inclinacion:
+            especie = arbol['nombre_com']
+            inclinacion = arbol['inclinacio']
+        
+    return especie, inclinacion
+
+# %%
 # %% main
 if __name__ == '__main__':
     especie = 'Jacarandá'
     path = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/ministerio-de-espacio-publico-e-higiene-urbana/arbolado-espacios-verdes/arbolado-en-espacios-verdes.csv'
     path2 = '/home/alexballera/Documents/uba/laboratorio-fcen/clases/Clase-01-PythonPandas/practica/arbolado-en-espacios-verdes.csv'
-    parque = 'GENERAL PAZ'
+    parques = ['GENERAL PAZ', 'ANDES, LOS', 'CENTENARIO']
 
     # Ejercicio 1
     print('='*40)
-    lista1, lista2, lista3, df = leer_parque(path2, parque)
-    print(f"Ejercicio1: Árboles en {parque}: {len(lista1)}")
+    lista1, lista2, lista3, df = leer_parque(path2, parques[0])
+    print(f"Ejercicio1: Árboles en {parques[0]}: {len(lista1)}\n")
     
     # Ejercicio 2
     print('='*40)
     arboles = especies(lista3)
-    print(f"Ejercicio2: Especies en {parque}: {len(arboles)}")
+    print(f"Ejercicio2: Especies en {parques[0]}: {len(arboles)}\n")
     
     # Ejercicio 3
     print('='*40)
     cantidad_especies = contar_ejemplares(lista1)
     # .get('Jacarandá', 0) busca la clave, si no existe devuelve 0 (evita KeyError)
-    print(f"Ejercicio 3: Cant de {especie} = {cantidad_especies[0].get(especie, 0)}")
+    print(f"Ejercicio 3: Cant de {especie} = {cantidad_especies[0].get(especie, 0)}\n")
     
     # Ejercicio 4
     print('='*40)
@@ -150,9 +166,8 @@ if __name__ == '__main__':
     h_mean = promedio(alturas)
     print(f'Ejercicio 4: alturas de {especie}: {alturas} ')
     print(f'Ejercicio 4: máximo de {especie}: {h_maximo} ')
-    print(f'Ejercicio 4: promedio de {especie}: {h_mean} ')
+    print(f'Ejercicio 4: promedio de {especie}: {h_mean}\n ')
     
-    parques = ['GENERAL PAZ', 'ANDES, LOS', 'CENTENARIO']
     proms = promedios(path2, parques, especie)
     print(f"""
 
@@ -162,7 +177,13 @@ Métricas {especie}:
     {proms} """)
     
     # Ejercicio 5
+    print('='*40)
+    inclinaciones = obtener_inclinaciones(lista1, especie)
+    print(f'Ejercicio 5: inclinaciones de {especie}: {inclinaciones}\n')
     
     # Ejercicio 6
+    print('='*40)
+    especie, inclinacion = especimen_mas_inclinado(lista1)
+    print(f'Ejercicio 6: Especie más inclinada: {especie}, inclinación: {inclinacion}\n')
 
 # %%
