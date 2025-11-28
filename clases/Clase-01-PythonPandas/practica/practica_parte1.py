@@ -89,75 +89,302 @@ def contar_ejemplares(lista_arboles):
     return result, conteo, conteo2
 
 # %% Ejercicio 4
+# ============================================================================
+# VERSIÓN ANTERIOR (comentada para comparación):
+# ============================================================================
+# def obtener_altura(lista_arboles, especie):
+#     # ❌ PROBLEMA 1: float() sin validación - puede lanzar ValueError
+#     # ❌ PROBLEMA 2: No filtra valores None, '', NaN
+#     # ❌ PROBLEMA 3: Acceso directo arbol['altura_tot'] puede dar KeyError
+#     alturas = [float(arbol['altura_tot']) for arbol in lista_arboles if arbol.get('nombre_com') == especie]
+#     return alturas
+#
+# def promedio(lista_numeros):
+#     # ❌ PROBLEMA: ZeroDivisionError si lista_numeros está vacía
+#     return round(sum(lista_numeros) / len(lista_numeros), 2)
+#
+# def maximo(lista_numeros):
+#     # ❌ PROBLEMA: ValueError si lista_numeros está vacía
+#     return round(max(lista_numeros), 2)
+# ============================================================================
+
+# VERSIÓN OPTIMIZADA:
 def obtener_altura(lista_arboles, especie):
-    alturas = [float(arbol['altura_tot']) for arbol in lista_arboles if arbol.get('nombre_com') == especie]
-        
+    """Obtiene las alturas de todos los ejemplares de una especie.
+    
+    MEJORAS:
+    - Usa .get() para acceso seguro (evita KeyError)
+    - Valida que altura no sea None, vacío o inválido
+    - Maneja excepciones en conversión a float (try/except)
+    - Retorna lista vacía si no hay ejemplares (comportamiento predecible)
+    
+    CONCEPTO CLAVE: Validación defensiva - asumir que los datos pueden estar
+    incompletos o mal formateados y manejar todos los casos edge.
+    """
+    alturas = []
+    for arbol in lista_arboles:
+        if arbol.get('nombre_com') == especie:
+            altura = arbol.get('altura_tot')  # .get() retorna None si no existe
+            # Validar que altura tenga un valor útil
+            if altura and str(altura).strip():  # Filtra None, '', espacios
+                try:
+                    alturas.append(float(altura))
+                except (ValueError, TypeError):  # Captura errores de conversión
+                    # Ignora valores que no se puedan convertir a float
+                    continue
     return alturas
 
 def promedio(lista_numeros):
+    """Calcula el promedio de una lista de números.
+    
+    MEJORA: Guard clause - verifica condición de error primero y retorna.
+    Evita ZeroDivisionError y hace el código más legible.
+    
+    CONCEPTO: 'Fail fast' - detectar problemas temprano y retornar valor seguro.
+    """
+    if not lista_numeros:  # Guard clause - chequeo temprano
+        return 0.0
     return round(sum(lista_numeros) / len(lista_numeros), 2)
 
 def maximo(lista_numeros):
+    """Retorna el valor máximo de una lista.
+    
+    MEJORA: Mismo patrón que promedio() - guard clause para robustez.
+    """
+    if not lista_numeros:
+        return 0.0
     return round(max(lista_numeros), 2)
 
-def promedios(path, parques, especie):
-    medida = ['max', 'prom']
-    maximos = []
-    promedios = []
-    medidas = []
+# VERSIÓN ANTERIOR (comentada):
+# def promedios(path, parques, especie):
+#     medida = ['max', 'prom']
+#     maximos = []
+#     promedios = []
+#     medidas = []  # ❌ Listas intermedias innecesarias
+#
+#     for parque in parques:
+#         lista_arboles = leer_parque(path, parque)[0]
+#         alturas = obtener_altura(lista_arboles, especie)
+#
+#         maximos.append(maximo(alturas))
+#         promedios.append(promedio(alturas))
+#
+#     medidas.append(maximos)  # ❌ Construcción manual de estructura
+#     medidas.append(promedios)
+#     
+#     # ❌ np.array() innecesario - pandas puede crear DataFrame directamente desde dict
+#     df = pd.DataFrame(np.array(medidas), columns=parques, index=medida)
+#
+#     return df
 
+# VERSIÓN OPTIMIZADA:
+def promedios(path, parques, especie):
+    """Calcula métricas (max y promedio) de altura por parque para una especie.
+    
+    MEJORAS:
+    - Usa diccionario en lugar de múltiples listas (más claro)
+    - Crea DataFrame directamente desde dict (más eficiente)
+    - Evita conversión innecesaria a np.array()
+    
+    CONCEPTO: Estructura de datos apropiada - dict es más semántico que lista
+    para datos etiquetados. Pandas optimiza la creación desde dict.
+    """
+    # Dict es más semántico que listas múltiples
+    metricas = {'max': [], 'prom': []}
+    
     for parque in parques:
         lista_arboles = leer_parque(path, parque)[0]
         alturas = obtener_altura(lista_arboles, especie)
-
-        maximos.append(maximo(alturas))
-        promedios.append(promedio(alturas))
-
-    medidas.append(maximos)
-    medidas.append(promedios)
+        
+        metricas['max'].append(maximo(alturas))
+        metricas['prom'].append(promedio(alturas))
     
-    df = pd.DataFrame(np.array(medidas), columns=parques, index=medida)
-
+    # DataFrame.from_dict es más directo y eficiente que np.array()
+    df = pd.DataFrame(metricas, index=parques).T
     return df
 
 # %% Ejercicio 5
+# ============================================================================
+# VERSIÓN ANTERIOR:
+# ============================================================================
+# def obtener_inclinaciones(lista_arboles, especie):
+#     # ❌ PROBLEMA 1: arbol['inclinacio'] acceso directo - puede dar KeyError
+#     # ❌ PROBLEMA 2: No valida que inclinación sea numérica
+#     # ❌ PROBLEMA 3: No filtra None o valores inválidos
+#     inclinaciones = [arbol['inclinacio'] for arbol in lista_arboles if arbol.get('nombre_com') == especie]
+#     return inclinaciones
+# ============================================================================
+
+# VERSIÓN OPTIMIZADA:
 def obtener_inclinaciones(lista_arboles, especie):
-    inclinaciones = [arbol['inclinacio'] for arbol in lista_arboles if arbol.get('nombre_com') == especie]
+    """Obtiene las inclinaciones de todos los ejemplares de una especie.
+    
+    MEJORAS:
+    - Usa .get() para acceso seguro a 'inclinacio'
+    - Valida que inclinacion no sea None antes de convertir
+    - Maneja excepciones en conversión a float
+    - Filtra valores inválidos automáticamente
+    
+    CONCEPTO: Mismo patrón defensivo que obtener_altura() - consistencia
+    en el código hace que sea más mantenible y predecible.
+    """
+    inclinaciones = []
+    for arbol in lista_arboles:
+        if arbol.get('nombre_com') == especie:
+            inclinacion = arbol.get('inclinacio')  # Acceso seguro
+            if inclinacion is not None:  # Validación explícita
+                try:
+                    inclinaciones.append(float(inclinacion))
+                except (ValueError, TypeError):
+                    continue  # Silenciosamente ignora valores inválidos
     return inclinaciones
 
 # %% Ejercicio 6
+# ============================================================================
+# VERSIÓN ANTERIOR:
+# ============================================================================
+# def especimen_mas_inclinado(lista_arboles):
+#     inclinacion = 0  # ❌ PROBLEMA 1: Si todas las inclinaciones son negativas, retorna 0
+#     for arbol in lista_arboles:
+#         # ❌ PROBLEMA 2: Acceso directo arbol['inclinacio'] - puede dar KeyError
+#         if arbol['inclinacio'] >= inclinacion:
+#             # ❌ PROBLEMA 3: Acceso directo arbol['nombre_com'] - puede dar KeyError
+#             especie = arbol['nombre_com']
+#             inclinacion = arbol['inclinacio']
+#     # ❌ PROBLEMA 4: Variable 'especie' puede no estar definida si lista vacía - UnboundLocalError
+#     return especie, inclinacion
+# ============================================================================
+
+# VERSIÓN OPTIMIZADA:
 def especimen_mas_inclinado(lista_arboles):
-    inclinacion = 0
+    """Encuentra el espécimen con mayor inclinación individual.
+    
+    MEJORAS CLAVE:
+    - Inicializa con float('-inf') en lugar de 0 (maneja valores negativos)
+    - Usa .get() para todos los accesos a diccionario
+    - Valida existencia de datos antes de procesar
+    - Retorna valores por defecto claros si no hay datos
+    
+    CONCEPTO 1: float('-inf') es el valor más pequeño posible, garantiza que
+    cualquier número real sea mayor. Técnica estándar para algoritmos de máximo.
+    
+    CONCEPTO 2: Retornar tupla consistente (siempre 2 valores) hace el código
+    más predecible - el caller siempre sabe qué esperar.
+    """
+    if not lista_arboles:  # Guard clause - caso base
+        return None, 0.0
+    
+    max_inclinacion = float('-inf')  # Inicialización correcta para búsqueda de máximo
+    especie_max = None
+    
     for arbol in lista_arboles:
-        if arbol['inclinacio'] >= inclinacion:
-            especie = arbol['nombre_com']
-            inclinacion = arbol['inclinacio']
+        inclinacion = arbol.get('inclinacio')  # Acceso seguro
+        nombre = arbol.get('nombre_com')       # Acceso seguro
         
-    return especie, inclinacion
+        # Validar que ambos campos existan antes de procesar
+        if inclinacion is not None and nombre:
+            try:
+                inclinacion = float(inclinacion)
+                if inclinacion > max_inclinacion:  # Algoritmo de máximo estándar
+                    max_inclinacion = inclinacion
+                    especie_max = nombre
+            except (ValueError, TypeError):
+                continue  # Ignora valores que no se pueden convertir
+    
+    # Si no se encontró ningún árbol válido, retornar valores por defecto
+    if especie_max is None:
+        return None, 0.0
+    
+    return especie_max, round(max_inclinacion, 2)
 
 # %% Ejercicio 7
+# ============================================================================
+# VERSIÓN ANTERIOR (INEFICIENTE - O(n²)):
+# ============================================================================
+# def especie_promedio_mas_inclinada(lista_arboles):
+#     arboles = {}
+#     especies = []  # ❌ Lista innecesaria - solo almacena un dict
+#     
+#     for arbol in lista_arboles:  # ❌ PROBLEMA CRÍTICO: Loop O(n)
+#         # ❌ obtener_inclinaciones() recorre toda la lista OTRA VEZ = O(n)
+#         # Resultado: O(n) * O(n) = O(n²) - EXTREMADAMENTE INEFICIENTE
+#         # Para 690 árboles: ~476,100 operaciones en lugar de ~690
+#         arboles[arbol.get('nombre_com')] = obtener_inclinaciones(lista_arboles, arbol.get('nombre_com'))
+#     
+#     especies.append(arboles)  # ❌ Wrapping innecesario en lista
+#     
+#     especies_prom = []  # ❌ Otra lista innecesaria
+#     arboles = {}
+#     
+#     for k, v in especies[0].items():  # ❌ Acceso a especies[0] innecesario
+#         arboles[k] = promedio(v)
+#     especies_prom.append(arboles)  # ❌ Otro wrapping innecesario
+#     
+#     inclinacion = 0  # ❌ Mismo problema que ejercicio 6
+#     for k, v in especies_prom[0].items():
+#         if v >= inclinacion:
+#             especie = k
+#             inclinacion = v
+#     # ❌ Variable 'especie' puede no estar definida
+#     return especie, inclinacion
+# ============================================================================
+
+# VERSIÓN OPTIMIZADA (O(n)):
 def especie_promedio_mas_inclinada(lista_arboles):
-    arboles = {}
-    especies = []
+    """Encuentra la especie con mayor inclinación promedio.
+    
+    MEJORA CRÍTICA: Reduce complejidad de O(n²) a O(n) usando defaultdict.
+    
+    EXPLICACIÓN DE COMPLEJIDAD:
+    - Versión anterior: para cada árbol (n), recorre toda la lista (n) → O(n²)
+    - Versión optimizada: recorre la lista UNA VEZ, agrupa en memoria → O(n)
+    - Ganancia: para 690 árboles, pasa de ~476,100 a ~690 operaciones (~690x más rápido)
+    
+    CONCEPTOS CLAVE:
+    1. defaultdict(list): crea listas automáticamente, evita KeyError
+    2. Una sola pasada: procesa cada elemento exactamente una vez
+    3. Agrupación en memoria: más eficiente que re-filtrar la lista
+    4. Dict comprehension: sintaxis pythónica y eficiente para transformaciones
+    5. max() con key: encuentra máximo sin loop manual
+    
+    PATRÓN: Agregar → Transformar → Reducir (paradigma funcional)
+    """
+    from collections import defaultdict
+    
+    if not lista_arboles:  # Guard clause
+        return None, 0.0
+    
+    # PASO 1: Agrupar inclinaciones por especie (una sola pasada - O(n))
+    # defaultdict(list) crea lista vacía automáticamente si la clave no existe
+    inclinaciones_por_especie = defaultdict(list)
+    
     for arbol in lista_arboles:
-        arboles[arbol.get('nombre_com')] = obtener_inclinaciones(lista_arboles, arbol.get('nombre_com'))
-    
-    especies.append(arboles)
-    
-    especies_prom = []
-    arboles = {}
-    
-    for k, v in especies[0].items():
-        arboles[k] = promedio(v)
-    especies_prom.append(arboles)
-    
-    inclinacion = 0
-    for k, v in especies_prom[0].items():
-        if v >= inclinacion:
-            especie = k
-            inclinacion = v
+        nombre = arbol.get('nombre_com')
+        inclinacion = arbol.get('inclinacio')
         
-    return especie, inclinacion
+        if nombre and inclinacion is not None:
+            try:
+                # Agrupar directamente sin llamar a obtener_inclinaciones()
+                inclinaciones_por_especie[nombre].append(float(inclinacion))
+            except (ValueError, TypeError):
+                continue
+    
+    if not inclinaciones_por_especie:
+        return None, 0.0
+    
+    # PASO 2: Calcular promedios (dict comprehension - pythónico y eficiente)
+    # Itera sobre items() una vez, crea nuevo dict con promedios
+    promedios_especies = {
+        especie: promedio(inclinaciones)
+        for especie, inclinaciones in inclinaciones_por_especie.items()
+    }
+    
+    # PASO 3: Encontrar el máximo (función built-in optimizada en C)
+    # key=lambda x: x[1] indica que compare por el segundo elemento (promedio)
+    # Retorna la tupla (especie, promedio) con mayor promedio
+    especie_max, promedio_max = max(promedios_especies.items(), key=lambda x: x[1])
+    
+    return especie_max, promedio_max
 
 # %%
 # %% main
