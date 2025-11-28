@@ -8,9 +8,7 @@ https://numpy.org/doc/stable/reference/index.html
 https://docs.python.org/es/3.14/library/collections.html#
 """
 # %% Importo las librerías
-import numpy as np
 import pandas as pd
-from collections import Counter, defaultdict
 # %% preparacion_df
 # ============================================================================
 # VERSIÓN ANTERIOR:
@@ -134,6 +132,144 @@ def parques_veredas_df(df):
     df_parque = df_trabajo.loc[mascara_parque, columnas_finales].copy()
     
     return df_parque, df_vereda
+
+# %% Ejercicio 9
+# ============================================================================
+# VERSIÓN ANTERIOR (CÓDIGO PROBLEMÁTICO):
+# ============================================================================
+# def add_column_ambiente(df_parque, df_vereda):
+#     # ❌ PROBLEMA 1: Sintaxis incorrecta - doble corchete [['ambiente']] para asignar
+#     #    Debería ser ['ambiente'] (sin lista) para asignar a una columna
+#     #    El doble corchete se usa para SELECCIONAR múltiples columnas, no para asignar
+#     df_parque[['ambiente']] = 'parque'
+#     df_vereda[['ambiente']] = 'vereda'
+#     
+#     # ❌ PROBLEMA 2: Modifica los DataFrames originales (mutación in-place)
+#     #    Si los DataFrames se usan después, tienen efectos secundarios no deseados
+#     #    Viola el principio de funciones puras
+#     
+#     return df_parque, df_vereda
+# ============================================================================
+
+# VERSIÓN OPTIMIZADA:
+def add_column_ambiente(df_parque, df_vereda):
+    """Añade columna 'ambiente' a DataFrames de parque y vereda.
+    
+    MEJORAS CRÍTICAS:
+    1. Usa .copy() para no modificar los DataFrames originales (inmutabilidad)
+    2. Sintaxis correcta: ['ambiente'] en lugar de [['ambiente']]
+    3. Usa .assign() como alternativa pythónica (método funcional)
+    
+    CONCEPTOS CLAVE:
+    
+    CONCEPTO 1: Inmutabilidad - funciones puras
+    - ❌ Modificar parámetros in-place → efectos secundarios, difícil de debuggear
+    - ✅ Retornar nuevos objetos → predecible, testeable, sin sorpresas
+    
+    CONCEPTO 2: Sintaxis de pandas para columnas
+    - df[['col1', 'col2']]  → SELECCIONAR múltiples columnas (retorna DataFrame)
+    - df['col']             → SELECCIONAR/ASIGNAR una columna (Series o asignación)
+    - df[['col']] = valor   → INCORRECTO (funciona pero no es la forma idónea)
+    - df['col'] = valor     → CORRECTO (asignación directa)
+    
+    CONCEPTO 3: .assign() - método funcional de pandas
+    - Sintaxis: df.assign(nueva_col=valor)
+    - Retorna NUEVO DataFrame sin modificar el original
+    - Más pythónico y encadenable (method chaining)
+    
+    Args:
+        df_parque: DataFrame con árboles de parques
+        df_vereda: DataFrame con árboles de veredas
+        
+    Returns:
+        tuple: (df_parque_con_ambiente, df_vereda_con_ambiente)
+    """
+    # OPCIÓN 1: Usar .copy() y asignación directa (más explícito)
+    df_parque_nuevo = df_parque.copy()
+    df_vereda_nuevo = df_vereda.copy()
+    
+    # Sintaxis correcta: ['ambiente'] sin doble corchete
+    df_parque_nuevo['ambiente'] = 'parque'
+    df_vereda_nuevo['ambiente'] = 'vereda'
+    
+    return df_parque_nuevo, df_vereda_nuevo
+    
+    # OPCIÓN 2: Usar .assign() - más funcional y pythónico
+    # return (
+    #     df_parque.assign(ambiente='parque'),
+    #     df_vereda.assign(ambiente='vereda')
+    # )
+    # Ventaja: más conciso, inmutable por defecto, encadenable
+
+# %% Ejercicio 10
+# ============================================================================
+# VERSIÓN ANTERIOR (BÁSICA):
+# ============================================================================
+# def concatenar(df_parque, df_vereda):
+#     # ❌ PROBLEMA 1: No valida entrada (DataFrames vacíos o None)
+#     # ❌ PROBLEMA 2: No maneja índices duplicados - puede causar problemas
+#     # ❌ PROBLEMA 3: No especifica parámetros importantes de concat
+#     #    - ignore_index: si no se especifica, mantiene índices originales (puede duplicar)
+#     #    - axis: por defecto es 0 (filas), pero ser explícito es mejor
+#     return pd.concat([df_parque, df_vereda])
+# ============================================================================
+
+# VERSIÓN OPTIMIZADA:
+def concatenar(df_parque, df_vereda):
+    """Concatena verticalmente DataFrames de parque y vereda.
+    
+    MEJORAS:
+    1. Valida entrada - maneja DataFrames vacíos o None
+    2. Usa ignore_index=True para resetear índices (evita duplicados)
+    3. Especifica axis=0 explícitamente (mejor legibilidad)
+    
+    CONCEPTOS CLAVE:
+    
+    CONCEPTO 1: pd.concat() - unión de DataFrames
+    - axis=0 (default) → concatena VERTICALMENTE (añade filas)
+    - axis=1 → concatena HORIZONTALMENTE (añade columnas)
+    - ignore_index=True → resetea índices (0, 1, 2, ..., n)
+    - ignore_index=False (default) → mantiene índices originales (puede duplicar)
+    
+    CONCEPTO 2: Índices duplicados son problemáticos
+    - Si df1 tiene índices [0,1,2] y df2 tiene [0,1,2]
+    - concat sin ignore_index → resultado tiene [0,1,2,0,1,2] (duplicados)
+    - .loc[0] retorna MÚTIPLES filas - comportamiento confuso
+    - ignore_index=True → resultado tiene [0,1,2,3,4,5] (sin duplicados)
+    
+    CONCEPTO 3: Validación defensiva con listas
+    - Filtrar DataFrames válidos antes de concat
+    - Evita errores si alguno es None o vacío
+    - Retorna DataFrame vacío con estructura correcta si no hay datos
+    
+    Args:
+        df_parque: DataFrame con árboles de parques (con columna 'ambiente')
+        df_vereda: DataFrame con árboles de veredas (con columna 'ambiente')
+        
+    Returns:
+        DataFrame: Unión vertical de ambos DataFrames con índice reseteado
+    """
+    # Validación defensiva - construir lista de DataFrames válidos
+    dfs_validos = []
+    
+    if df_parque is not None and not df_parque.empty:
+        dfs_validos.append(df_parque)
+    if df_vereda is not None and not df_vereda.empty:
+        dfs_validos.append(df_vereda)
+    
+    # Si no hay DataFrames válidos, retornar DataFrame vacío con estructura
+    if not dfs_validos:
+        # Inferir columnas del primer DataFrame no vacío, o usar estructura básica
+        columnas = ['nombre_cientifico', 'diametro_altura_pecho', 'altura_arbol', 'ambiente']
+        return pd.DataFrame(columns=columnas)
+    
+    # Concatenar verticalmente (axis=0) reseteando índices
+    # ignore_index=True → evita índices duplicados, crea secuencia 0,1,2,...,n
+    return pd.concat(
+        dfs_validos,
+        axis=0,              # Concatenar verticalmente (añadir filas)
+        ignore_index=True    # Resetear índices para evitar duplicados
+    )
 # %% main
 if __name__ == '__main__':
     path1 = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/atencion-ciudadana/arbolado-publico-lineal/arbolado-publico-lineal-2017-2018.csv'
@@ -155,5 +291,32 @@ if __name__ == '__main__':
     print(df_tipas_parques.head(3))
     print("\nPrimeros 3 árboles en veredas:")
     print(df_tipas_veredas.head(3))
+    
+    # Ejercicio 9
+    print('='*60)
+    print('Ejercicio 9')
+    df_tipas_parques, df_tipas_veredas = add_column_ambiente(df_tipas_parques, df_tipas_veredas)
+    
+    # Verificar resultados
+    print(f"Columnas en parques: {df_tipas_parques.columns}")
+    print(f"Columnas en veredas: {df_tipas_veredas.columns}")
+    print("\nPrimeros 3 árboles en parques:")
+    print(df_tipas_parques.head(3))
+    print("\nPrimeros 3 árboles en veredas:")
+    print(df_tipas_veredas.head(3))
+    
+    # Ejercicio 10
+    print('='*60)
+    print('Ejercicio 10')
+    df_concatenado = concatenar(df_tipas_parques, df_tipas_veredas)
+    
+    # Verificar resultados
+    print(f"Columnas en nuevo df: {df_concatenado.columns}")
+    print("\nPrimeros 3 árboles:")
+    print(df_concatenado.head(3))
+    print("\nÚltimos 3 árboles:")
+    print(df_concatenado.tail(3))
+    
+    
 
 # %%
