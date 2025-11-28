@@ -128,10 +128,34 @@ def obtener_inclinaciones(lista_arboles, especie):
 # %% Ejercicio 6
 def especimen_mas_inclinado(lista_arboles):
     inclinacion = 0
-    for i, arbol in enumerate(lista_arboles):
+    for arbol in lista_arboles:
         if arbol['inclinacio'] >= inclinacion:
             especie = arbol['nombre_com']
             inclinacion = arbol['inclinacio']
+        
+    return especie, inclinacion
+
+# %% Ejercicio 7
+def especie_promedio_mas_inclinada(lista_arboles):
+    arboles = {}
+    especies = []
+    for arbol in lista_arboles:
+        arboles[arbol.get('nombre_com')] = obtener_inclinaciones(lista_arboles, arbol.get('nombre_com'))
+    
+    especies.append(arboles)
+    
+    especies_prom = []
+    arboles = {}
+    
+    for k, v in especies[0].items():
+        arboles[k] = promedio(v)
+    especies_prom.append(arboles)
+    
+    inclinacion = 0
+    for k, v in especies_prom[0].items():
+        if v >= inclinacion:
+            especie = k
+            inclinacion = v
         
     return especie, inclinacion
 
@@ -144,23 +168,23 @@ if __name__ == '__main__':
     parques = ['GENERAL PAZ', 'ANDES, LOS', 'CENTENARIO']
 
     # Ejercicio 1
-    print('='*40)
-    lista1, lista2, lista3, df = leer_parque(path2, parques[0])
+    print('='*60)
+    lista1, lista2, lista3, df = leer_parque(path2, parques[1])
     print(f"Ejercicio1: Árboles en {parques[0]}: {len(lista1)}\n")
     
     # Ejercicio 2
-    print('='*40)
+    print('='*60)
     arboles = especies(lista3)
     print(f"Ejercicio2: Especies en {parques[0]}: {len(arboles)}\n")
     
     # Ejercicio 3
-    print('='*40)
+    print('='*60)
     cantidad_especies = contar_ejemplares(lista1)
     # .get('Jacarandá', 0) busca la clave, si no existe devuelve 0 (evita KeyError)
     print(f"Ejercicio 3: Cant de {especie} = {cantidad_especies[0].get(especie, 0)}\n")
     
     # Ejercicio 4
-    print('='*40)
+    print('='*60)
     alturas = obtener_altura(lista2, especie)
     h_maximo = maximo(alturas)
     h_mean = promedio(alturas)
@@ -177,13 +201,18 @@ Métricas {especie}:
     {proms} """)
     
     # Ejercicio 5
-    print('='*40)
+    print('='*60)
     inclinaciones = obtener_inclinaciones(lista1, especie)
     print(f'Ejercicio 5: inclinaciones de {especie}: {inclinaciones}\n')
     
     # Ejercicio 6
-    print('='*40)
+    print('='*60)
     especie, inclinacion = especimen_mas_inclinado(lista1)
     print(f'Ejercicio 6: Especie más inclinada: {especie}, inclinación: {inclinacion}\n')
+    
+    # Ejercicio 7
+    print('='*60)
+    especie, inclinacion = especie_promedio_mas_inclinada(lista1)
+    print(f'Ejercicio 7: Especie más inclinada promedio: {especie}, inclinación: {inclinacion}\n')
 
 # %%
