@@ -270,6 +270,70 @@ def concatenar(df_parque, df_vereda):
         axis=0,              # Concatenar verticalmente (añadir filas)
         ignore_index=True    # Resetear índices para evitar duplicados
     )
+
+# %% Ejercicio 11
+def analizar_diferencias_por_ambiente(df_concatenado, especies_seleccionadas):
+    """Analiza diferencias entre ejemplares de especies según ambiente (parque vs vereda).
+    
+    Responde: ¿Hay diferencias entre ejemplares de una misma especie según si crecen 
+    en un parque o en la vereda?
+    
+    CONCEPTOS CLAVE:
+    
+    CONCEPTO 1: .groupby() - agrupa filas y calcula estadísticas por grupo
+    - df.groupby(['especie', 'ambiente'])['diametro'].mean()
+    
+    CONCEPTO 2: .isin() - filtra filas por lista de valores
+    - df[df['especie'].isin(['A', 'B', 'C'])]
+    
+    CONCEPTO 3: .pivot_table() - reorganiza datos (largo → ancho) para comparar
+    - Convierte ambiente en columnas (parque | vereda)
+    
+    Args:
+        df_concatenado: DataFrame con árboles de parques y veredas
+        especies_seleccionadas: Lista de especies a analizar
+        
+    Returns:
+        DataFrame: Comparación lado a lado (parque vs vereda) con diferencias %
+    """
+    # Filtrar por especies de interés
+    mascara = df_concatenado['nombre_cientifico'].isin(especies_seleccionadas)
+    df_filtrado = df_concatenado[mascara].copy()
+    
+    # Convertir a numérico (previene errores)
+    df_filtrado['diametro_altura_pecho'] = pd.to_numeric(
+        df_filtrado['diametro_altura_pecho'], errors='coerce'
+    )
+    df_filtrado['altura_arbol'] = pd.to_numeric(
+        df_filtrado['altura_arbol'], errors='coerce'
+    )
+    
+    # Calcular promedios por especie y ambiente
+    promedios = df_filtrado.groupby(['nombre_cientifico', 'ambiente']).agg({
+        'diametro_altura_pecho': 'mean',
+        'altura_arbol': 'mean'
+    }).round(2)
+    
+    # Reorganizar para comparar lado a lado (pivot)
+    # De formato largo → ancho (parque y vereda como columnas)
+    comparacion = promedios.reset_index().pivot(
+        index='nombre_cientifico',
+        columns='ambiente',
+        values=['diametro_altura_pecho', 'altura_arbol']
+    )
+    
+    # Calcular diferencias porcentuales: (vereda - parque) / parque * 100
+    # Esto muestra si en vereda hay +% o -% respecto al parque
+    for metrica in ['diametro_altura_pecho', 'altura_arbol']:
+        if ('parque' in comparacion[metrica].columns and 
+            'vereda' in comparacion[metrica].columns):
+            comparacion[(metrica, 'dif_%')] = (
+                (comparacion[(metrica, 'vereda')] - comparacion[(metrica, 'parque')]) / 
+                comparacion[(metrica, 'parque')] * 100
+            ).round(1)
+    
+    return comparacion
+
 # %% main
 if __name__ == '__main__':
     path1 = 'https://cdn.buenosaires.gob.ar/datosabiertos/datasets/atencion-ciudadana/arbolado-publico-lineal/arbolado-publico-lineal-2017-2018.csv'
@@ -316,6 +380,41 @@ if __name__ == '__main__':
     print(df_concatenado.head(3))
     print("\nÚltimos 3 árboles:")
     print(df_concatenado.tail(3))
+    
+    # Ejercicio 11
+    print('='*60)
+    print('Ejercicio 11: Análisis parque vs vereda')
+    print('='*60)
+    
+    comparacion = analizar_diferencias_por_ambiente(df_concatenado, especies_seleccionadas)
+    
+    print("\n📊 COMPARACIÓN POR ESPECIE (promedios):")
+    print(comparacion)
+    
+    print("\n📝 INTERPRETACIÓN:")
+    for especie in especies_seleccionadas:
+        if especie in comparacion.index:
+            print(f"\n🌳 {especie}:")
+            
+            # Diferencia % de diámetro
+            if ('diametro_altura_pecho', 'dif_%') in comparacion.columns:
+                dif_diam = comparacion.loc[especie, ('diametro_altura_pecho', 'dif_%')]
+                if pd.notna(dif_diam):
+                    if abs(dif_diam) < 5:
+                        print(f"  • Diámetro similar en ambos ambientes ({dif_diam:+.1f}%)")
+                    else:
+                        ambiente = "vereda" if dif_diam > 0 else "parque"
+                        print(f"  • Diámetro mayor en {ambiente} ({dif_diam:+.1f}%)")
+            
+            # Diferencia % de altura
+            if ('altura_arbol', 'dif_%') in comparacion.columns:
+                dif_alt = comparacion.loc[especie, ('altura_arbol', 'dif_%')]
+                if pd.notna(dif_alt):
+                    if abs(dif_alt) < 5:
+                        print(f"  • Altura similar en ambos ambientes ({dif_alt:+.1f}%)")
+                    else:
+                        ambiente = "vereda" if dif_alt > 0 else "parque"
+                        print(f"  • Altura mayor en {ambiente} ({dif_alt:+.1f}%)")
     
     
 
